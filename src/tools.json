@@ -1,0 +1,26 @@
+[
+    {
+        "name": "list_notes",
+        "description": "show all the names of the notes in the Obsidian graph written",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+            },
+            "required": []
+        }
+    },
+    {
+        "name": "read_note",
+        "description": "show the content of a note",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "name_file": {
+                    "type": "string",
+                    "description": "The exact name of the file to read, including the .md extension"
+                }
+            },
+            "required": ["name_file"]
+        }
+    }
+]
