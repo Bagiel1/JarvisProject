@@ -51,9 +51,11 @@ def search_notes(keyword: str) -> list:
     """Search for a specific keyword inside all markdown notes in the Obsidian vault.
 
     Use this tool when you need to find which notes mention a specific concept, entity, or word before trying to read them or create links.
+    
+    CRITICAL: The 'keyword' argument MUST be a SINGLE WORD (e.g., 'supino' or 'python'). NEVER use phrases or multiple words like 'supino PR'.
 
     Args:
-        keyword: The specific word, phrase, or concept to search for across the notes.
+        keyword: The specific single word to search for across the notes' names and contents.
     """
     print(f"[LOG DO JARVIS] 🔍 Buscando pela palavra-chave: '{keyword}'")
     
@@ -64,9 +66,25 @@ def search_notes(keyword: str) -> list:
         path_file= os.path.join(path_obsidian, name_file)
         if path_file.endswith(".md"):
             with open(path_file, "r") as f:
-                if keyword in f.read():
+                content = f.read()
+                if keyword.lower() in name_file.lower() or keyword.lower() in content.lower():
                     list_of_search.append(name_file)
 
     list_of_search= " - ".join(list_of_search)
     
     return list_of_search
+
+
+@beta_tool # Use o mesmo decorador que você já usa nas ferramentas do Obsidian
+def transfer_to_coder(tarefa: str) -> str:
+    """
+    TRANSFER to the Coder agent. Use this tool IMMEDIATELY when the user asks for Python scripts, programming, code analysis, or terminal tasks.
+    
+    CRITICAL RULE: After using this tool, your text response to the user MUST start exactly with:
+    [HANDOFF_CODER] followed by the 'tarefa'. Do not add any other text or greetings.
+    
+    Args:
+        tarefa: The exact programming instruction of what the user wants to be coded.
+    """
+    print("\n🔄 [JARVIS] Identificou código. Acionando o Coder por debaixo dos panos...")
+    return "Tool executed successfully. Now reply to the user with the [HANDOFF_CODER] tag."
