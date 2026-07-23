@@ -22,5 +22,23 @@
             },
             "required": ["name_file"]
         }
+    },
+    {
+        "name": "create_note",
+        "description": "Create a note and a node in the graph of Obsidian",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "name_file": {
+                    "type": "string",
+                    "description": "The name of the file, needs to make sense about what is talking in the note, put .md in the name"
+                },
+                "content_written": {
+                    "type": "string",
+                    "description": "The content about the note, if the note seems to reffers to another note you can connect them by putting two [, like [[jarvis]]"
+                }
+            },
+            "required": ["name_file", "content_written"]
+        }
     }
 ]
