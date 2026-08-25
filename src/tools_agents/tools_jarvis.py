@@ -78,7 +78,11 @@ def search_notes(keyword: str) -> list:
 @beta_tool # Use o mesmo decorador que você já usa nas ferramentas do Obsidian
 def transfer_to_coder(tarefa: str) -> str:
     """
-    TRANSFER to the Coder agent. Use this tool IMMEDIATELY when the user asks for Python scripts, programming, code analysis, or terminal tasks.
+    TRANSFER control to the Coder agent. 
+    
+    CRITICAL RULE: Use this tool ONLY when the user explicitly asks to WRITE, DEBUG, ANALYZE, or EXECUTE code. 
+    DO NOT use this tool if the user is asking to CREATE A NOTE, save information, or document code in Obsidian. 
+    If the text mentions code but the actual intent is to "anotar", "salvar" or "guardar" in Obsidian, YOU must use your own `create_note` tool. Do not transfer to the Coder for note-taking.
     
     CRITICAL RULE: After using this tool, your text response to the user MUST start exactly with:
     [HANDOFF_CODER] followed by the 'tarefa'. Do not add any other text or greetings.

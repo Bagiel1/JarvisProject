@@ -67,12 +67,14 @@ while True:
         if handoff_destino == "coder":
             print(f"🔄 Terminal redirecionado para o Coder. Tarefa: '{tarefa_para_coder}'")
             agente_ativo = "coder"
-            historico_coder.append({"role": "user", "content": tarefa_para_coder})
+            msg_coder = f"[SISTEMA - ORDEM DE ORQUESTRAÇÃO]\nO usuário pediu a seguinte tarefa de programação: '{tarefa_para_coder}'"
+            historico_coder.append({"role": "user", "content": msg_coder})
             continue
         elif handoff_destino == "jarvis":
             print(f"🔄 Terminal redirecionado para o Jarvis. Motivo: '{motivo}'")
             agente_ativo = "jarvis"
-            historico_jarvis.append({"role": "user", "content": motivo})
+            msg_jarvis = f"[SISTEMA - RETORNO DO CODER]\nO agente Coder finalizou o trabalho técnico e devolveu o controle com este relatório: '{motivo}'.\nATENÇÃO: Leia o relatório e atenda a solicitação não-técnica do usuário. NÃO acione a ferramenta de código agora."
+            historico_jarvis.append({"role": "user", "content": msg_jarvis})
             continue
 
     print("\n")
