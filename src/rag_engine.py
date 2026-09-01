@@ -42,9 +42,10 @@ def busca_contexto(pergunta: str, n_resultados: int= 2):
 
     for doc, distancia, meta in zip(resultados['documents'][0], resultados['distances'][0],
                                     resultados['metadatas'][0]):
-        if distancia < 1:
+        if distancia < 5:
             docs_validos.append(doc)
             nomes_validos.append(meta['nome_nota'])
+            print(distancia)
     
     return docs_validos, nomes_validos
 

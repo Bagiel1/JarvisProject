@@ -52,25 +52,17 @@ def search_notes(keyword: str) -> list:
 
     Use this tool when you need to find which notes mention a specific concept, entity, or word before trying to read them or create links.
     
-    CRITICAL: The 'keyword' argument MUST be a SINGLE WORD (e.g., 'supino' or 'python'). NEVER use phrases or multiple words like 'supino PR'.
+    CRITICAL: The 'keyword' argument MUST be a phrase or a single word.
 
     Args:
         keyword: The specific single word to search for across the notes' names and contents.
     """
     print(f"[LOG DO JARVIS] 🔍 Buscando pela palavra-chave: '{keyword}'")
     
-    lista_of_notes= os.listdir(path_obsidian)
-    list_of_search= []
+    from rag_engine import busca_contexto
 
-    for name_file in lista_of_notes:
-        path_file= os.path.join(path_obsidian, name_file)
-        if path_file.endswith(".md"):
-            with open(path_file, "r") as f:
-                content = f.read()
-                if keyword.lower() in name_file.lower() or keyword.lower() in content.lower():
-                    list_of_search.append(name_file)
-
-    list_of_search= " - ".join(list_of_search)
+    texto_lista, list_of_search= busca_contexto(keyword)
+    list_of_search = " - ".join(list_of_search)
     
     return list_of_search
 
