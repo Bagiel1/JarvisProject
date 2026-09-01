@@ -2,3 +2,4 @@
 venv/
 src/__pycache__/
 src/tools_agents/__pycache__/
+bunker_db/
