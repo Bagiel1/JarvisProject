@@ -43,6 +43,10 @@ def create_note(name_file: str, written: str) -> str:
     path_file= os.path.join(path_obsidian, name_file)
     with open(path_file, "w") as f:
         f.write(written)
+
+    from rag_engine import adicionar_ou_atualizar_nota
+
+    adicionar_ou_atualizar_nota(path_file)
     
     return "Nota Criada"
 
@@ -84,3 +88,23 @@ def transfer_to_coder(tarefa: str) -> str:
     """
     print("\n🔄 [JARVIS] Identificou código. Acionando o Coder por debaixo dos panos...")
     return "Tool executed successfully. Now reply to the user with the [HANDOFF_CODER] tag."
+
+@beta_tool
+def delete_note(name_file: str):
+    """Delete a note if, and ONLY if, the user especify the name and asks to delete it.
+        
+        Args:
+            name_file: The name of the file. It must be the file asked and MUST include the .md extension.
+        """
+    try:
+        full_path= os.path.join(path_obsidian, name_file)
+        os.remove(full_path)
+
+        from rag_engine import remove_note
+
+        remove_note(name_file)
+
+
+
+    except FileNotFoundError as e:
+        print(f"System error message: {e}\n")

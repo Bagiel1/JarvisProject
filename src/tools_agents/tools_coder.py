@@ -54,3 +54,4 @@ def read_file(file_path: str) -> str:
         return content
     except FileNotFoundError:
         return f"Error: The file '{file_path}' was not found. Please verify the path."
+

@@ -66,6 +66,11 @@ def adicionar_ou_atualizar_nota(full_path: str):
 
     print(f"✅ Nota '{nome_arquivo}' injetada no banco vetorial!")
 
+def remove_note(name_file: str):
+    chroma_client= chromadb.PersistentClient(path="./bunker_db")
+    collection= chroma_client.get_collection(name="my_obsidian")
+
+    collection.delete(ids=[name_file])
 
 if __name__ == "__main__":
     inicialization()
