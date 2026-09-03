@@ -1,9 +1,13 @@
 import chromadb
 import os
+from chromadb.utils.embedding_functions import SentenceTransformerEmbeddingFunction
+
+EMBEDDING_FUNCTION= SentenceTransformerEmbeddingFunction(model_name="paraphrase-multilingual-MiniLM-L12-v2")
 
 def inicialization():
     chroma_client= chromadb.PersistentClient(path="./bunker_db")
-    collection= chroma_client.get_or_create_collection(name="my_obsidian")
+    collection= chroma_client.get_or_create_collection(name="my_obsidian",
+                                                       embedding_function=EMBEDDING_FUNCTION)
 
     path_obsidian= "/home/bagiel/Gabriel/obsidian/ia_obsidian"
 
@@ -31,7 +35,8 @@ def inicialization():
 
 def busca_contexto(pergunta: str, n_resultados: int= 2):
     chroma_client= chromadb.PersistentClient(path="./bunker_db")
-    collection= chroma_client.get_collection(name="my_obsidian")
+    collection= chroma_client.get_collection(name="my_obsidian",
+                                             embedding_function=EMBEDDING_FUNCTION)
 
     resultados= collection.query(
         query_texts=[pergunta],
@@ -42,7 +47,7 @@ def busca_contexto(pergunta: str, n_resultados: int= 2):
 
     for doc, distancia, meta in zip(resultados['documents'][0], resultados['distances'][0],
                                     resultados['metadatas'][0]):
-        if distancia < 5:
+        if distancia < 0.7:
             docs_validos.append(doc)
             nomes_validos.append(meta['nome_nota'])
             print(distancia)
@@ -51,7 +56,8 @@ def busca_contexto(pergunta: str, n_resultados: int= 2):
 
 def adicionar_ou_atualizar_nota(full_path: str):
     chroma_client= chromadb.PersistentClient(path="./bunker_db")
-    collection= chroma_client.get_collection(name="my_obsidian")
+    collection= chroma_client.get_collection(name="my_obsidian",
+                                             embedding_function=EMBEDDING_FUNCTION)
 
     nome_arquivo= os.path.basename(full_path)
 
@@ -68,7 +74,8 @@ def adicionar_ou_atualizar_nota(full_path: str):
 
 def remove_note(name_file: str):
     chroma_client= chromadb.PersistentClient(path="./bunker_db")
-    collection= chroma_client.get_collection(name="my_obsidian")
+    collection= chroma_client.get_collection(name="my_obsidian",
+                                             embedding_function=EMBEDDING_FUNCTION)
 
     collection.delete(ids=[name_file])
 
