@@ -3,7 +3,7 @@ from tools_agents import tools_jarvis, tools_coder
 
 question = input("Você: ")
 
-jarvis_tools= [tools_jarvis.create_note, tools_jarvis.list_notes, tools_jarvis.read_note, tools_jarvis.search_notes, tools_jarvis.transfer_to_coder, tools_jarvis.delete_note]
+jarvis_tools= [tools_jarvis.create_note, tools_jarvis.list_notes, tools_jarvis.read_note, tools_jarvis.search_notes, tools_jarvis.transfer_to_coder, tools_jarvis.delete_note, tools_jarvis.update_note]
 coder_tools= [tools_coder.transfer_to_jarvis, tools_coder.create_code, tools_coder.read_file]
 
 agente_ativo= "jarvis"
