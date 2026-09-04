@@ -61,10 +61,14 @@ def create_note(name_file: str, written: str) -> str:
     return "Nota Criada"
 
 @beta_tool
-def search_notes(keyword: str) -> list:
+def search_notes(keyword: str) -> str:
     """
     Semantically search Obsidian notes by concept or meaning.
     Use short relevant words or phrases, not necessarily exact text.
+
+    Search returns filenames with relevant excerpts.
+    Use the excerpt directly when sufficient.
+    Read the full note only when more context is needed or before updating it.
 
     Args:
         keyword: Semantic search query.
@@ -73,10 +77,22 @@ def search_notes(keyword: str) -> list:
     
     from rag_engine import busca_contexto
 
-    texto_lista, list_of_search= busca_contexto(keyword)
-    list_of_search = " - ".join(list_of_search)
-    
-    return list_of_search
+    resultados= busca_contexto(keyword)
+
+    if not resultados:
+        return "Nenhuma nota relevante encontrada."
+
+    blocos= []
+    for resultado in resultados:
+        nome= resultado["nome_nota"]
+        bloco= f"NOTA: {nome}\n"
+
+        for i, trecho in enumerate(resultado["trechos"], 1):
+            bloco += f"\nTRECHO {i}:\n{trecho}\n"
+
+        blocos.append(bloco)
+
+    return "\n---\n".join(blocos)
 
 
 @beta_tool # Use o mesmo decorador que você já usa nas ferramentas do Obsidian
