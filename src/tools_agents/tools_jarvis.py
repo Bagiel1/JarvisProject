@@ -1,7 +1,8 @@
 import os
 from anthropic import beta_tool
+from config import OBSIDIAN_PATH
 
-path_obsidian= "/home/bagiel/Gabriel/obsidian/ia_obsidian"
+path_obsidian= OBSIDIAN_PATH
 
 @beta_tool
 def read_note(name_file: str) -> str:
@@ -32,9 +33,10 @@ def create_note(name_file: str, written: str) -> str:
     """
     Create a NEW Obsidian note.
 
+    Before creating it, search 1-3 main related concepts for existing notes.
     Use this only when a new note is actually needed.
     Do NOT use it to modify an existing note; use update_note instead.
-    Write Markdown and only create [[links]] to notes confirmed by previous tool results.
+    Write Markdown and only create [[links]] to confirmed existing notes.
 
     Args:
         name_file: New filename including .md.
@@ -42,7 +44,13 @@ def create_note(name_file: str, written: str) -> str:
     """
     print(f"[LOG DO JARVIS] ✍️ Criando/Atualizando a nota: {name_file}")
     
-    path_file= os.path.join(path_obsidian, name_file)
+    path_file= path_obsidian / name_file
+    if path_file.exists():
+        return (
+        f"Erro: a nota '{name_file}' já existe. "
+        "Use update_note para modificá-la."
+        )
+    
     with open(path_file, "w", encoding='utf-8') as f:
         f.write(written)
 
@@ -95,12 +103,14 @@ def delete_note(name_file: str):
             name_file: The name of the file. It must be the file asked and MUST include the .md extension.
         """
     try:
-        full_path= os.path.join(path_obsidian, name_file)
+        full_path= path_obsidian / name_file
         os.remove(full_path)
 
         from rag_engine import remove_note
 
         remove_note(name_file)
+        print(f"[LOG DO JARVIS] 📂 Deletando o arquivo {name_file} do Obsidian...")
+
 
     except FileNotFoundError as e:
         print(f"System error message: {e}\n")
@@ -125,8 +135,9 @@ def update_note(
     - "replace": update information that already exists.
     old_text MUST be copied exactly from read_note.
     - "append": add genuinely new information at the end.
-    - "insert_after": add information under/after an existing section or passage.
+    - "insert_after": add new_text immediately after an existing section/passage.
     anchor MUST be copied exactly from read_note.
+    new_text must NOT repeat the anchor.
 
     Never invent old_text or anchor.
 
@@ -221,6 +232,7 @@ def update_note(
             with open(full_path, "w", encoding="utf-8") as f:
                 f.write(conteudo_novo)
 
+        print(f"[LOG DO JARVIS] 📂 Atualizando o arquivo {name_file} com a funcao {operation}")
 
     except OSError as e:
         return f"Erro ao atualizar a nota: {e}"

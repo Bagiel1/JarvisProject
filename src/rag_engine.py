@@ -1,11 +1,14 @@
 import chromadb
 import os
 from chromadb.utils.embedding_functions import SentenceTransformerEmbeddingFunction
+from config import CHROMA_PATH
+
+path_chroma= CHROMA_PATH
 
 EMBEDDING_FUNCTION= SentenceTransformerEmbeddingFunction(model_name="paraphrase-multilingual-MiniLM-L12-v2")
 
 def inicialization():
-    chroma_client= chromadb.PersistentClient(path="./bunker_db")
+    chroma_client= chromadb.PersistentClient(path=str(path_chroma))
     collection= chroma_client.get_or_create_collection(name="my_obsidian",
                                                        embedding_function=EMBEDDING_FUNCTION)
 
@@ -34,7 +37,7 @@ def inicialization():
     print(f"✅ {len(documentos)} notas vetorizadas e salvas no banco!")
 
 def busca_contexto(pergunta: str, n_resultados: int= 2):
-    chroma_client= chromadb.PersistentClient(path="./bunker_db")
+    chroma_client= chromadb.PersistentClient(path=str(path_chroma))
     collection= chroma_client.get_collection(name="my_obsidian",
                                              embedding_function=EMBEDDING_FUNCTION)
 
@@ -55,7 +58,7 @@ def busca_contexto(pergunta: str, n_resultados: int= 2):
     return docs_validos, nomes_validos
 
 def adicionar_ou_atualizar_nota(full_path: str):
-    chroma_client= chromadb.PersistentClient(path="./bunker_db")
+    chroma_client= chromadb.PersistentClient(path=str(path_chroma))
     collection= chroma_client.get_collection(name="my_obsidian",
                                              embedding_function=EMBEDDING_FUNCTION)
 
@@ -73,7 +76,7 @@ def adicionar_ou_atualizar_nota(full_path: str):
     print(f"✅ Nota '{nome_arquivo}' injetada no banco vetorial!")
 
 def remove_note(name_file: str):
-    chroma_client= chromadb.PersistentClient(path="./bunker_db")
+    chroma_client= chromadb.PersistentClient(path=str(path_chroma))
     collection= chroma_client.get_collection(name="my_obsidian",
                                              embedding_function=EMBEDDING_FUNCTION)
 

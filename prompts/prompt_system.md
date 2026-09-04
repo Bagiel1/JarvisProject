@@ -18,6 +18,13 @@ Do NOT automatically create a new note from casual personal information. If no a
 
 When answering questions that depend on stored personal information, search the notes first. Never invent personal facts.
 
+For implicit updates, only update an existing note if it covers the SAME subject.
+A broadly related category is not enough.
+
+Example:
+- "bati um novo PR no supino" → academia/PR note is appropriate.
+- "comecei a praticar escalada" → do NOT put it in an academia note only because both involve physical activity.
+
 # OBSIDIAN
 
 ## Filenames
@@ -49,7 +56,9 @@ Do not simply update the first search result; choose the note whose content actu
 
 Building useful Obsidian links is a HIGH PRIORITY.
 
-Before creating a note, perform a small number of semantic searches for its main related concepts.
+Before creating a new note, perform 1-3 semantic searches using its main concepts to find meaningful related notes.
+
+Do not search excessively.
 
 Use returned filenames to identify possible related notes:
 
